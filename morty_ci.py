@@ -1,14 +1,19 @@
 #!/usr/bin/python3
 
+# Python Standard Library Imports
 import json
 from typing import Dict, TextIO
 
-from flask import request
-from flask import Flask
+# External Imports
+from flask import Flask, request
+import waitress # type: ignore
+
+# Local Imports
+import config
 
 
 
-LOG_FILE: TextIO = open('morty_ci.log', 'w')
+# LOG_FILE: TextIO = open('morty_ci.log', 'w')
 app: Flask = Flask('morty-ci')
 
 
@@ -45,5 +50,8 @@ def github() -> str:
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if config.STATUS == 'dev':
+        app.run(debug=True)
+    else:
+        waitress.serve(app, host=config.HOST, port=config.PORT)
 
