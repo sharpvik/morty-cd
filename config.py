@@ -1,4 +1,4 @@
-STATUS = 'dep'
+STATUS: str = 'dep'
 
-HOST = '0.0.0.0'
-PORT = 8080
+HOST: str = 'localhost'
+PORT: int = 5000
