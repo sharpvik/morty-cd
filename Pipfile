@@ -1,5 +1,5 @@
 [[source]]
-name = "morty-ci"
+name = "morty-cd"
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
