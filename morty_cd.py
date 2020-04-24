@@ -36,6 +36,10 @@ More about GitHub webhook events here:
 -----------------------------------------------------------------------------"""
 class Handlers:
     @staticmethod
+    def ping(event: str, info: Dict):
+        pass
+
+    @staticmethod
     def push(event: str, info: Dict):
         sh.run(SCRIPT, stdout=LOG_FILE)
 
@@ -56,6 +60,7 @@ MUX is an alternative to a switch case. It maps GitHub webhook event strings to
 a handler function that's used to handle that event.
 -----------------------------------------------------------------------------"""
 MUX: Dict = {
+    'ping': Handlers.ping,
     'push': Handlers.push,
     'pull_request': Handlers.pull_request,
 }
@@ -83,10 +88,15 @@ def github() -> str:
     return '200 - OK'
 
 
+@app.route('/ping', methods=['GET'])
+def ping() -> str:
+    return '200 - OK'
+
+
 
 if __name__ == '__main__':
     if config.STATUS == 'dev':
         app.run(debug=True)
     else:
-        waitress.serve(app, host=config.HOST, port=config.PORT)
+        waitress.serve(app, port=config.PORT)
 

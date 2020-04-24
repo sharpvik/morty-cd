@@ -11,4 +11,4 @@ STATUS: str = 'dep'
 HOST: str = 'localhost'
 
 """ Server port. """
-PORT: int = 5000
+PORT: int = 5050
