@@ -7,8 +7,5 @@ be utitlized.
 -----------------------------------------------------------------------------"""
 STATUS: str = 'dep'
 
-""" Server host address. """
-HOST: str = 'localhost'
-
 """ Server port. """
 PORT: int = 5050

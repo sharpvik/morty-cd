@@ -68,6 +68,16 @@ MUX: Dict = {
 
 
 """-----------------------------------------------------------------------------
+Use this route to test your server before doing anything crazy. Just see if it's
+working or not.
+-----------------------------------------------------------------------------"""
+@app.route('/ping', methods=['GET'])
+def ping() -> str:
+    return '200 - OK'
+
+
+
+"""-----------------------------------------------------------------------------
 When setting up a GitHub webhook for this app, don't forget to append '/github'
 to the end of your server's link.
 
@@ -85,11 +95,6 @@ def github() -> str:
     event: str = request.headers['X-GitHub-Event']
     info: Dict = request.json
     MUX[event](event, info)
-    return '200 - OK'
-
-
-@app.route('/ping', methods=['GET'])
-def ping() -> str:
     return '200 - OK'
 
 
