@@ -1,3 +1,6 @@
 .mypy_cache
+.vscode
+
+morty-cd
 *log*
 Pipfile.lock
