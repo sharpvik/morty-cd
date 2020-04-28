@@ -1,92 +1,44 @@
 package main
 
 import (
-    "net/http"
-    "io"
-    "os/exec"
-    "os"
-    "encoding/json"
-    "log"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
 )
 
 var logr *log.Logger
+
+// script is a string that represents a script that you want to run on GitHub
+// webhook event.
 var script string
 
 func main() {
-    logr = log.New(logWriter, logPrefix, log.Ltime)
-    
-    if (len(os.Args) < 2) {
-        logr.Fatal("Specify the script name!")
-    }
+	logr = log.New(logWriter, logPrefix, log.Ltime)
 
-    script = os.Args[1]
+	if len(os.Args) < 2 {
+		logr.Fatal("Specify the script name!")
+	}
 
-    http.HandleFunc("/ping", ping)
-    http.HandleFunc("/github", github)
+	script = os.Args[1]
 
-    logr.Printf("Serving at port %s", port)
-    logr.Fatal(http.ListenAndServe(port, nil))
+	http.HandleFunc("/ping", onPing)   // Local testing.
+	http.HandleFunc("/github", github) // URL utilized by GitHub.
+
+	logr.Printf("Serving at port %s", port)
+	http.ListenAndServe(port, nil)
 }
 
-// Dummy ping handler function to check whether everything's working.
-func ping(w http.ResponseWriter, r *http.Request) {
-    io.WriteString(w, "200 - OK")
-    logr.Printf("Received ping request")
-}
+// runScript is a function we use to safely execute the script.
+func runScript() {
+	logr.Printf("Executing %s...", script)
 
-// Main handler function.
-func github(w http.ResponseWriter, r *http.Request) {
-    // Must reject all requests except POST!
-    if r.Method != "POST" {
-        w.WriteHeader(http.StatusBadRequest)
-        io.WriteString(w, "400 - bad request")
-        return
-    }
+	bts, err := exec.Command(script).Output()
 
-    io.WriteString(w, "200 - OK")
+	if err != nil {
+		logr.Print(err)
+		return
+	}
 
-    event := r.Header.Get("X-GitHub-Event")
-
-    switch event {
-    case "ping":
-        ping(w, r)
-
-    case "push":
-        onPush()
-
-    case "pull_request":
-        var info PullRequestEvent
-        decoder := json.NewDecoder(r.Body)
-        err := decoder.Decode(&info)
-
-        if err != nil {
-            logr.Print("Cannot decode JSON")
-            return
-        }
-
-        onPullRequest(info)
-    }   
-}
-
-func onPush() {
-    logr.Print("Push detected")
-    logr.Printf("Executing %s...", script)
-    exec.Command(script)
-}
-
-func onPullRequest(info PullRequestEvent) {
-    logr.Print("Pull Request detected")
-
-    action := info.Action
-    merged := info.PullRequest.Merged
-
-    // Only run script when pull request has been closed and merged.
-    if action == "closed" && merged {
-        logr.Print("Pull request has been merged")
-        logr.Printf("Executing %s...", script)
-        exec.Command(script)
-        return
-    }
-
-    logr.Print("Pull request failed the 'closed with merge' test")
+	logr.Println(bts)
 }
