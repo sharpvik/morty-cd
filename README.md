@@ -29,11 +29,11 @@ go build
 ### GitHub Webhooks Setup
 
 Locate the GitHub repo you'd like to bind your `script` to. From there go
-**Settings > Webhooks > Add webhook**. For *Payload URL* use your server's IP
-address and port like so: `155.13.12.5:5050/github`. You must include the
+**Settings > Webhooks > Add webhook**. For **Payload URL** use your server's IP
+address and port like so: `http://155.13.12.5:5050/github`. You must include the
 `/github` at the end!
 
-Set *Content type* to `application/json` and select the events you want to
+Set **Content type** to `application/json` and select the events you want to
 trigger webhook notifications. Confirm.
 
 > If you don't see some of the events you want included in the `handlers.go`

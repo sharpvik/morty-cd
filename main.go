@@ -13,9 +13,9 @@ import (
 //! few things to watch out for.
 //!
 //! GitHub's webhook events carry a lot of JSON data, so the pullRequestEvent
-//! struct comes out extremely large. It is extremely important that it is passed
-//! by &reference for efficiency reasons. Especially, knowing that it is never
-//! mutated anyways.
+//! struct comes out extremely large. It is extremely important that it is
+//! passed by &reference for efficiency reasons. Especially, knowing that it is
+//! never mutated anyways.
 //!
 
 var logr *log.Logger
