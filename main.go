@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-//! 
+//!
 //! Go, like Flask, only actually responds to the client on function return.
 //! However, Go's concurrency is much easier to understand. Though, there are a
 //! few things to watch out for.
@@ -16,7 +16,7 @@ import (
 //! struct comes out extremely large. It is extremely important that it is passed
 //! by &reference for efficiency reasons. Especially, knowing that it is never
 //! mutated anyways.
-//! 
+//!
 
 var logr *log.Logger
 

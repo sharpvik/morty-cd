@@ -6,12 +6,12 @@ import (
 	"net/http"
 )
 
-//! 
+//!
 //! All handler functions are defined in this file.
 //! These handlers are used to handle specific GitHub webhook events.
 //! More about GitHub webhook events here:
 //!     https://developer.github.com/v3/activity/events/types
-//! 
+//!
 
 // Dummy ping handler function to check whether everything's working.
 func onPing(w http.ResponseWriter, r *http.Request) {
