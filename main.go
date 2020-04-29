@@ -40,5 +40,5 @@ func runScript() {
 		return
 	}
 
-	logr.Println(bts)
+	logr.Print(string(bts))
 }
