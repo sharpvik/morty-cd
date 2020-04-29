@@ -6,15 +6,17 @@ import (
 	"net/http"
 )
 
-// All handler functions are defined in this file.
-// These handlers are used to handle specific GitHub webhook events.
-// More about GitHub webhook events here:
-//     https://developer.github.com/v3/activity/events/types
+//! 
+//! All handler functions are defined in this file.
+//! These handlers are used to handle specific GitHub webhook events.
+//! More about GitHub webhook events here:
+//!     https://developer.github.com/v3/activity/events/types
+//! 
 
 // Dummy ping handler function to check whether everything's working.
 func onPing(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "200 - OK")
 	logr.Printf("Received ping request")
+	io.WriteString(w, "200 - OK")
 }
 
 // Main handler function.
@@ -48,7 +50,7 @@ func github(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		onPullRequest(info)
+		onPullRequest(&info)
 	}
 }
 
@@ -58,7 +60,7 @@ func onPush() {
 	runScript()
 }
 
-func onPullRequest(info PullRequestEvent) {
+func onPullRequest(info *PullRequestEvent) {
 	logr.Print("Pull Request detected")
 
 	action := info.Action

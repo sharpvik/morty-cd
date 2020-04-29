@@ -7,6 +7,17 @@ import (
 	"os/exec"
 )
 
+//! 
+//! Go, like Flask, only actually responds to the client on function return.
+//! However, Go's concurrency is much easier to understand. Though, there are a
+//! few things to watch out for.
+//!
+//! GitHub's webhook events carry a lot of JSON data, so the pullRequestEvent
+//! struct comes out extremely large. It is extremely important that it is passed
+//! by &reference for efficiency reasons. Especially, knowing that it is never
+//! mutated anyways.
+//! 
+
 var logr *log.Logger
 
 // script is a string that represents a script that you want to run on GitHub
@@ -33,12 +44,16 @@ func main() {
 func runScript() {
 	logr.Printf("Executing %s...", script)
 
-	bts, err := exec.Command(script).Output()
+	// This part is responsible for running the script concurrently. Otherwise,
+	// the client will time out and GitHub will mark payload as undelivered.
+	go func() {
+		bts, err := exec.Command(script).Output()
 
-	if err != nil {
-		logr.Print(err)
-		return
-	}
+		if err != nil {
+			logr.Print(err)
+			return
+		}
 
-	logr.Print(string(bts))
+		logr.Print(string(bts))
+	}()
 }
