@@ -1,6 +1,8 @@
 .mypy_cache
 .vscode
 
+config.go
+
 morty-cd
 *log*
 Pipfile.lock
