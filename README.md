@@ -1,7 +1,7 @@
-# Morty CI
+# Morty CD
 
-Simple Python Flask tool for Continuous Integration and Continuous Deployment
-utilizing the power of GitHub webhooks.
+Simple Go tool for Continuous Integration and Continuous Deployment utilizing
+the power of GitHub webhooks.
 
 
 
